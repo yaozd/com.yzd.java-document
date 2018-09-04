@@ -1,3 +1,59 @@
+## A.jvm原理-byArvin提示下面文章需要反复阅读才可以-20180904
+- 1.[成为JavaGC专家（1）—深入浅出Java垃圾回收机制](http://www.importnew.com/1993.html)
+- 2.[GC算法 垃圾收集器-byArvin推荐-常用收集器组合推荐](https://www.cnblogs.com/ityouknow/p/5614961.html)
+- 3.[Java堆内存又溢出了！教你一招必杀技](http://blog.51cto.com/lizhenliang/2164876)
+- 4.[你的JVM还好吗？GC初步诊断](https://baijiahao.baidu.com/s?id=1609197715939125193&wfr=spider&for=pc)
+
+## A.各垃圾收集器对应的性能指标
+1.Parallel GC模式 （jdk1.8 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代））
+
+| Tables   |      name      |
+|----------|:-------------:|
+| 青年代回收次数  |gc.ps_scavenge.count|
+| 青年代回收时间 | gc.ps_scavenge.time | 
+| 老年代回收次数 | gc.ps_marksweep.count |
+| 老年代回收时间 | gc.ps_marksweep.time | 
+参考：[Java GC 调试手记](https://blog.csdn.net/firecoder/article/details/7225654)
+
+==
+
+2.G1 GC模式  默认：(老年代使用G1)（新生代使用G1）
+
+| Tables   |      name      |
+|----------|:-------------:|
+| 青年代回收次数  |gc.g1_young_generation.count|
+| 青年代回收时间 | gc.g1_young_generation.time | 
+| 老年代回收次数 | gc.g1_old_generation.count |
+| 老年代回收时间 | gc.g1_old_generation.time | 
+参考：[—深入浅出Java垃圾回收机制](http://www.importnew.com/1993.html)
+
+==
+
+2.CMS GC模式 默认：(老年代使用CMS)（新生代使用ParNew）
+
+| Tables   |      name      |
+|----------|:-------------:|
+| 青年代回收次数  |gc.parnew.count|
+| 青年代回收时间 | gc.parnew.time | 
+| 老年代回收次数 | gc.concurrentmarksweep.count |
+| 老年代回收时间 | gc.concurrentmarksweep.time | 
+其中初始标记、重新标记这两个步骤仍然需要“Stop The World”
+参考：[—深入浅出Java垃圾回收机制](http://www.importnew.com/1993.html)
+
+
+## A.jvm默认垃圾收集器789
+```
+https://blog.csdn.net/luoliang1024/article/details/78984902
+jdk1.7 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代）
+
+jdk1.8 默认垃圾收集器Parallel Scavenge（新生代）+Parallel Old（老年代）
+
+jdk1.9 默认垃圾收集器G1
+
+-XX:+PrintCommandLineFlagsjvm参数可查看默认设置收集器类型
+
+-XX:+PrintGCDetails亦可通过打印的GC日志的新生代、老年代名称判断
+```
 ## A.产生大对象情况（大对象是造成FULL GC产生重要原因）
 ```
 1.本地缓存-（二级缓存是可以提高性能但也会产生内存溢出）
